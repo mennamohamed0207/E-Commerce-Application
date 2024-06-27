@@ -18,3 +18,11 @@
   ```sh
  npm i dotenv
  ```
+ ## to use middleware install morgan 
+  ```sh
+ npm i morgan
+ ```
+ ## to use mongodb install mongoose 
+  ```sh
+ npm i mongoose
+ ```
