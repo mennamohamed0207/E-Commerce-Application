@@ -26,3 +26,6 @@
   ```sh
  npm i mongoose
  ```
+# Resources and documentations
+## Mongoose
+https://mongoosejs.com/docs/guide.html#definition
