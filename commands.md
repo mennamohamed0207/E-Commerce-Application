@@ -26,6 +26,14 @@
   ```sh
  npm i mongoose
  ```
+ ## to use slugify 
+   ```sh
+ npm i slugify
+ ```
+ ## to use express-async-handler
+   ```sh
+npm install --save express-async-handler
+ ```
 # Resources and documentations
 ## Mongoose
 https://mongoosejs.com/docs/guide.html#definition

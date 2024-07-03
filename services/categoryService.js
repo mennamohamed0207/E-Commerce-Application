@@ -1,5 +1,7 @@
 const categoryModel = require("../models/categoryModel");
 const slugify = require("slugify");
+const asyncHandler = require('express-async-handler')
+
 
 //the body of the function when we were in server.js
 // exports.createCategory=(req, res) => {
@@ -19,10 +21,15 @@ const slugify = require("slugify");
 //       res.json(error);
 // });
 // }
-exports.createCategory = (req, res) => {
+exports.createCategory = asyncHandler(async (req, res) => {
+  //async await
   const name = req.body.name;
-  categoryModel
-    .create({ name, slug: slugify(name) })
-    .then((categorty) => res.status(201).json({ data: categorty }))
-    .catch((err) => res.status(400).json({ error: 400 }));
-};
+  const categorty=await categoryModel
+  .create({ name, slug: slugify(name) });
+   res.status(201).json({ data: categorty });
+ 
+});
+exports.getCategories=(req,res)=>{
+  const categories=categoryModel.data;
+  res.send(categories);
+}
