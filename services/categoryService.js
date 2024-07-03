@@ -21,15 +21,23 @@ const asyncHandler = require('express-async-handler')
 //       res.json(error);
 // });
 // }
+
+
+//@desc Create category
+//@Route POST /api/v1/categories
+//@Access Private
 exports.createCategory = asyncHandler(async (req, res) => {
-  //async await
   const name = req.body.name;
   const categorty=await categoryModel
   .create({ name, slug: slugify(name) });
    res.status(201).json({ data: categorty });
  
 });
-exports.getCategories=(req,res)=>{
-  const categories=categoryModel.data;
-  res.send(categories);
-}
+//@desc Get all categories
+//@Route GET /api/v1/categories
+//@Access Public
+exports.getCategories=asyncHandler(async(req,res)=>{
+  const categories=await categoryModel.find({});
+  res.status(200).json({results:categories.length,data:categories});
+ 
+});
