@@ -1,7 +1,6 @@
 const categoryModel = require("../models/categoryModel");
 const slugify = require("slugify");
-const asyncHandler = require('express-async-handler')
-
+const asyncHandler = require("express-async-handler");
 
 //the body of the function when we were in server.js
 // exports.createCategory=(req, res) => {
@@ -22,23 +21,36 @@ const asyncHandler = require('express-async-handler')
 // });
 // }
 
-
-
 //@desc Create category
 //@Route POST /api/v1/categories
 //@Access Private
 exports.createCategory = asyncHandler(async (req, res) => {
   const name = req.body.name;
-  const categorty=await categoryModel
-  .create({ name, slug: slugify(name) });
-   res.status(201).json({ data: categorty });
- 
+  const categorty = await categoryModel.create({ name, slug: slugify(name) });
+  res.status(201).json({ data: categorty });
 });
 //@desc Get all categories
 //@Route GET /api/v1/categories
 //@Access Public
-exports.getCategories=asyncHandler(async(req,res)=>{
-  const categories=await categoryModel.find({});
-  res.status(200).json({results:categories.length,data:categories});
- 
+exports.getCategories = asyncHandler(async (req, res) => {
+  //*1 to convert it from string to integer
+  const page = req.query.page * 1 || 1;
+  const limit = req.query.limit * 1 || 5;
+  const skip = (page - 1) * limit;
+  const categories = await categoryModel.find({}).skip(skip).limit(limit);
+  res
+    .status(200)
+    .json({
+      results: categories.length,
+      page: page,
+      limit: limit,
+      data: categories,
+    });
+});
+exports.getCategory = asyncHandler(async (req, res) => {
+  const id = req.params.id; //const {id} =req.params;
+  const categorty = await categoryModel.findById(id);
+  if (!categorty) {
+    res.status(404).json({ msg: `No category found with this ${id}` });
+  } else res.status(200).json({ data: categorty });
 });
