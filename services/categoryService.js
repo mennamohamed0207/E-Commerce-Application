@@ -54,3 +54,27 @@ exports.getCategory = asyncHandler(async (req, res) => {
     res.status(404).json({ msg: `No category found with this ${id}` });
   } else res.status(200).json({ data: categorty });
 });
+exports.updateCategory=asyncHandler (async(req,res)=>{
+  const id=req.params.id;
+  const name=req.body.name;
+  const categorty=await categoryModel.findOneAndUpdate({_id:id},{name:name,slug:slugify(name)},{new:true});
+  if (!categorty) {
+    res.status(404).json({ msg: `No category found with this ${id}` });
+  } else res.status(200).json({ data: categorty });
+
+});
+exports.deleteCategory=asyncHandler(async(req,res)=>{
+  const id =req.params.id;
+  // const categorty=await categoryModel.deleteOne({_id:id});
+  //this one always return the else although the document does not exist
+  // if (!categorty) {
+  //   res.status(404).json({ msg: `No category found with this ${id}` });
+  // } else res.status(200).json({ msg: `Category with this ${id} has been deleted successfully` });
+
+  const categorty=await categoryModel.findByIdAndDelete(id);
+  if (!categorty) {
+    res.status(404).json({ msg: `No category found with this ${id}` });
+  } else res.status(201).json({msg: `Category with this ${id} has been deleted successfully`});
+  //if we want to indicate success without msg we can send status code 204
+
+})
