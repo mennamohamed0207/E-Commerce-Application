@@ -12,6 +12,12 @@
 ├─── routes
 │   └─── categoryRoute.js
 │
+├─── utils
+│   └─── apiError.js
+│
+├─── middleware
+│   └─── errorMiddleware.js
+│
 ├───server.js           ------------>the start point
 
 ```

@@ -2,6 +2,7 @@
 const expess = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
+const apiError=require("./utils/apiError")
 
 dotenv.config({
   //if it was .env ,we will not need to configure its path
@@ -11,6 +12,7 @@ dotenv.config({
 //connect to DB
 const dbConnection=require("./config/database");
 const categoryRoute =require("./routes/categoryRoute");
+const globalError = require("./middleware/errorMiddleware");
 dbConnection();
 
 
@@ -31,14 +33,16 @@ app.use("/api/v1/categories",categoryRoute);
 
 app.all("*", (req, res, next) => {
   //Create an error when there is not route found and then pass it to the global error handler
-  const error=new Error("route not found");
-  next(error.message);
+
+  //Version 1 before apiError
+  // const error=new Error("route not found");
+  // next(error.message);
+
+  next(new apiError(`can't find ${req.originalUrl} on this server`, 404));
 })
 //Global Error handling middleware 
 //it must be at the end
-app.use((error,req,res,next)=>{
-  res.status(500).json({error})
-})
+app.use(globalError)
 //server listen to the port
 const port = process.env.PORT;
 app.listen(port, () => {
