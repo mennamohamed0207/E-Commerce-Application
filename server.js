@@ -29,6 +29,11 @@ if (process.env.NODE_ENV == "development") {
 //Mount Routes
 app.use("/api/v1/categories",categoryRoute);
 
+app.all("*", (req, res, next) => {
+  //Create an error when there is not route found and then pass it to the global error handler
+  const error=new Error("route not found");
+  next(error.message);
+})
 //Global Error handling middleware 
 //it must be at the end
 app.use((error,req,res,next)=>{
