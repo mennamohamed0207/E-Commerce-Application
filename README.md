@@ -1,5 +1,5 @@
 # E-Commerce-Application
-## project structurs
+## Project Structurs
 ```sh
 ├─── config
 │  └─── database.js    ---------->for database connection
