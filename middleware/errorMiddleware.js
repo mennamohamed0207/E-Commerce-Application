@@ -6,6 +6,8 @@ const globalError = (error, req, res, next) => {
   //we can make the error more descrptive and check if it in development mode
   if (process.env.NODE_ENV === "development") {
     sendErrorForDev(error, res);
+  }else{
+    sendErrorForProd(error, res);
   }
 };
 const sendErrorForDev = (error, res) => {
@@ -16,5 +18,12 @@ const sendErrorForDev = (error, res) => {
     stack: error.stack,
   });
 };
+
+const sendErrorForProd = (error, res) => {
+  res.status(400).json({
+    status: error.status,
+    message: error.message,
+  });
+}
 
 module.exports = globalError;
